@@ -1,19 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { widgetRegistry } from '../widgets/registry';
-import type { WidgetDefinition } from '../types';
+import type { WidgetDefinition } from '../types'; // used by WidgetCard prop type
 
 interface AddWidgetModalProps {
   onAdd: (type: string, config: Record<string, unknown>) => void;
   onClose: () => void;
 }
 
-const CATEGORIES: Array<{ label: string; types: string[] }> = [
-  { label: 'Utilities',              types: ['clock', 'notes', 'bookmarks', 'search', 'iframe'] },
-  { label: 'Media',                  types: ['jellyfin', 'jellyseerr'] },
-  { label: 'Network',                types: ['gluetun', 'adguard', 'cloudflaretunnels'] },
-  { label: 'Downloads & Containers', types: ['qbittorrent', 'whatsupdocker'] },
-  { label: 'Information',            types: ['weather'] },
-];
+const CATEGORY_ORDER = ['Utilities', 'Information', 'Media', 'Network', 'Downloads & Containers'];
+
+const CATEGORIES = CATEGORY_ORDER.map((label) => ({
+  label,
+  widgets: widgetRegistry.filter((w) => w.category === label),
+})).filter((c) => c.widgets.length > 0);
 
 export default function AddWidgetModal({ onAdd, onClose }: AddWidgetModalProps) {
   const [query, setQuery] = useState('');
@@ -73,22 +72,16 @@ export default function AddWidgetModal({ onAdd, onClose }: AddWidgetModalProps) 
             )
           ) : (
             /* Categorized list */
-            CATEGORIES.map((cat) => {
-              const widgets = cat.types
-                .map((t) => widgetRegistry.find((w) => w.type === t))
-                .filter((w): w is WidgetDefinition => !!w);
-              if (widgets.length === 0) return null;
-              return (
-                <div key={cat.label} style={styles.category}>
-                  <p style={styles.categoryLabel}>{cat.label.toUpperCase()}</p>
-                  <div style={styles.grid}>
-                    {widgets.map((def) => (
-                      <WidgetCard key={def.type} def={def} onAdd={onAdd} />
-                    ))}
-                  </div>
+            CATEGORIES.map((cat) => (
+              <div key={cat.label} style={styles.category}>
+                <p style={styles.categoryLabel}>{cat.label.toUpperCase()}</p>
+                <div style={styles.grid}>
+                  {cat.widgets.map((def) => (
+                    <WidgetCard key={def.type} def={def} onAdd={onAdd} />
+                  ))}
                 </div>
-              );
-            })
+              </div>
+            ))
           )}
         </div>
       </div>

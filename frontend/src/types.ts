@@ -58,6 +58,7 @@ export interface WidgetDefinition {
   description: string;
   icon: string;
   logoUrl?: string;
+  category: 'Utilities' | 'Media' | 'Network' | 'Downloads & Containers' | 'Information';
   defaultSize: { w: number; h: number; minW?: number; minH?: number };
   defaultConfig: Record<string, unknown>;
   component: React.ComponentType<WidgetProps>;
