@@ -1,0 +1,124 @@
+@import 'react-grid-layout/css/styles.css';
+@import 'react-resizable/css/styles.css';
+
+/* CSS custom properties defaults — overridden by ThemeContext at runtime */
+:root {
+  --color-background:    #080808;
+  --color-surface:       #0f0f0f;
+  --color-surface-hover: #1a1a1a;
+  --color-primary:       #fff500;
+  --color-primary-hover: #ffe000;
+  --color-text:          #efefef;
+  --color-text-muted:    #555555;
+  --color-border:        #2a2a2a;
+  --color-success:       #00e676;
+  --color-danger:        #ff1744;
+  --color-widget-bg:     #0a0a0a;
+  --color-widget-border: #2a2a2a;
+  --font-family:         'Courier New', Courier, monospace;
+  --font-weight:         400;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border-radius: 0 !important;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-family, 'Courier New', Courier, monospace);
+  font-weight: var(--font-weight, 400);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+/* Selection */
+::selection {
+  background: var(--color-primary);
+  color: #000;
+}
+
+/* Inputs */
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* Links */
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* react-grid-layout resize handle override */
+.react-resizable-handle {
+  position: absolute;
+  background-image: none !important;
+  z-index: 10;
+}
+
+.react-resizable-handle::after {
+  content: '';
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--color-border);
+  border-bottom: 2px solid var(--color-border);
+  opacity: 0.6;
+  transition: opacity 0.1s, border-color 0.1s;
+}
+
+.react-resizable-handle:hover::after {
+  opacity: 1;
+  border-color: var(--color-primary);
+}
+
+/* react-grid-layout placeholder */
+.react-grid-item.react-grid-placeholder {
+  background: var(--color-primary) !important;
+  opacity: 0.08 !important;
+  border-radius: 0 !important;
+  border: 2px solid var(--color-primary) !important;
+}
