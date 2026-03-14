@@ -14,6 +14,7 @@ const weatherRoutes = require('./routes/integrations/weather');
 const cloudflaretunnelsRoutes = require('./routes/integrations/cloudflaretunnels');
 const qbittorrentRoutes = require('./routes/integrations/qbittorrent');
 const whatsupdockerRoutes = require('./routes/integrations/whatsupdocker');
+const dockerstatsRoutes = require('./routes/integrations/dockerstats');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -32,6 +33,7 @@ app.use('/api/integrations/weather', weatherRoutes);
 app.use('/api/integrations/cloudflaretunnels', cloudflaretunnelsRoutes);
 app.use('/api/integrations/qbittorrent', qbittorrentRoutes);
 app.use('/api/integrations/whatsupdocker', whatsupdockerRoutes);
+app.use('/api/integrations/dockerstats', dockerstatsRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });

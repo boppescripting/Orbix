@@ -12,6 +12,7 @@ import WeatherWidget, { WeatherConfig } from './WeatherWidget';
 import CloudflareTunnelsWidget, { CloudflareTunnelsConfig } from './CloudflareTunnelsWidget';
 import QbittorrentWidget, { QbittorrentConfig } from './QbittorrentWidget';
 import WhatsUpDockerWidget, { WhatsUpDockerConfig } from './WhatsUpDockerWidget';
+import DockerStatsWidget, { DockerStatsConfig } from './DockerStatsWidget';
 
 export const widgetRegistry: WidgetDefinition[] = [
   {
@@ -137,6 +138,17 @@ export const widgetRegistry: WidgetDefinition[] = [
     defaultConfig: { city: '', unit: 'celsius', refreshInterval: '900' },
     component: WeatherWidget,
     configComponent: WeatherConfig,
+  },
+  {
+    type: 'dockerstats',
+    name: 'Docker Stats',
+    description: 'Container status, CPU & memory, start/stop/restart',
+    icon: '🐋',
+    logoUrl: 'https://cdn.simpleicons.org/docker/ffffff',
+    defaultSize: { w: 4, h: 5, minW: 3, minH: 3 },
+    defaultConfig: { url: '', refreshInterval: '10', showStopped: true },
+    component: DockerStatsWidget,
+    configComponent: DockerStatsConfig,
   },
   {
     type: 'adguard',
