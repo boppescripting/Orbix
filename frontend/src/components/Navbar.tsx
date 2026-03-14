@@ -80,7 +80,8 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '0.5rem',
   },
   btnPrimary: {
-    padding: '0.4rem 0.85rem',
+    height: '32px',
+    padding: '0 0.85rem',
     background: 'var(--color-primary)',
     color: '#000',
     border: '2px solid var(--color-primary)',
@@ -93,7 +94,8 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
   },
   btnSecondary: {
-    padding: '0.4rem 0.85rem',
+    height: '32px',
+    padding: '0 0.85rem',
     background: 'transparent',
     color: 'var(--color-text)',
     border: '2px solid var(--color-border)',
@@ -104,7 +106,8 @@ const styles: Record<string, React.CSSProperties> = {
     cursor: 'pointer',
   },
   btnEdit: {
-    padding: '0.4rem 0.75rem',
+    height: '32px',
+    padding: '0 0.75rem',
     background: 'transparent',
     color: 'var(--color-text-muted)',
     border: '2px solid var(--color-border)',
@@ -115,7 +118,8 @@ const styles: Record<string, React.CSSProperties> = {
     cursor: 'pointer',
   },
   btnEditActive: {
-    padding: '0.4rem 0.75rem',
+    height: '32px',
+    padding: '0 0.75rem',
     background: 'var(--color-primary)',
     color: '#000',
     border: '2px solid var(--color-primary)',
@@ -137,7 +141,8 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: "'Courier New', Courier, monospace",
   },
   btnLogout: {
-    padding: '0.4rem 0.75rem',
+    height: '32px',
+    padding: '0 0.75rem',
     background: 'transparent',
     color: 'var(--color-text-muted)',
     border: '2px solid var(--color-border)',
