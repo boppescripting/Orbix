@@ -9,7 +9,7 @@ interface NavbarProps {
 }
 
 export default function Navbar({ editMode, onToggleEditMode, onAddWidget, onOpenTheme }: NavbarProps) {
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
 
   return (
     <nav style={styles.nav}>
