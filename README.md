@@ -8,8 +8,10 @@ A self-hosted personal dashboard with a dark brutalist aesthetic. Add widgets fo
 
 - **Drag-and-drop grid** — freely position and resize any widget
 - **Edit mode** — lock the dashboard when you're done arranging
-- **Theme editor** — customize every color and font live, with changes saved per user
+- **Theme editor** — customize every color, font family, and font weight live, with changes saved per user
 - **Multi-user** — each user has their own dashboard layout and theme
+- **Spotlight search** — press `Space` anywhere on the dashboard to open a quick search bar; cycles between Google, DuckDuckGo, Bing, and Brave with `Tab`; remembers your last-used engine
+- **Add Widget modal** — categorized widget browser with live search
 - **Integration widgets** — all external service calls are proxied through the backend to avoid CORS issues
 - **Widget settings** — each integration widget has an inline settings panel for configuring URLs, API keys, and refresh intervals
 - **Self-contained** — SQLite database, no external database required
@@ -27,6 +29,12 @@ A self-hosted personal dashboard with a dark brutalist aesthetic. Add widgets fo
 | **Bookmarks** | Quick-access link list, editable in edit mode |
 | **Search** | Web search bar supporting Google, DuckDuckGo, Bing, and Brave |
 | **Web Embed** | Embed any webpage in an iframe |
+
+### Information
+
+| Widget | Description |
+|--------|-------------|
+| **Weather** | Current conditions for any city via Open-Meteo (no API key required) |
 
 ### Media
 
@@ -49,12 +57,7 @@ A self-hosted personal dashboard with a dark brutalist aesthetic. Add widgets fo
 |--------|-------------|
 | **qBittorrent** | Active downloads with progress, speed, ETA; seeding count |
 | **What's Up Docker** | Container update availability across your Docker host |
-
-### Information
-
-| Widget | Description |
-|--------|-------------|
-| **Weather** | Current conditions for any city via Open-Meteo (no API key required) |
+| **Docker Stats** | Per-container CPU %, memory usage, state dot, and start/stop/restart actions |
 
 ---
 
@@ -70,6 +73,7 @@ services:
       - "3001:3001"
     volumes:
       - /opt/orbix/data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock  # only needed for Docker Stats widget
     environment:
       - JWT_SECRET=your-secret-here
       - DB_PATH=/app/data/dashboard.db
@@ -145,6 +149,10 @@ All integrations require only the URL of the service on your local network and a
 - **Account ID:** Found on the Cloudflare dashboard sidebar
 - **API Token:** Create at Cloudflare → My Profile → API Tokens with `Account:Cloudflare Tunnel:Read` permission
 
+### Docker Stats
+- **URL:** Leave empty to use the Docker socket at `/var/run/docker.sock` (requires the socket volume mount in your compose file). Or provide an HTTP URL for TCP access, e.g. `http://host:2375`.
+- The widget displays CPU %, memory usage with a color-coded bar, container state, and buttons to start, stop, or restart each container.
+
 ### Weather
 - No API key required. Just enter a city name.
 
@@ -159,6 +167,7 @@ Create `frontend/src/widgets/MyWidget.tsx`. The component receives `WidgetProps`
 ```tsx
 import React from 'react';
 import type { WidgetProps, WidgetConfigProps } from '../types';
+import { authHeaders } from '../utils';
 
 export default function MyWidget({ config }: WidgetProps) {
   const label = config.label as string;
@@ -176,6 +185,8 @@ export function MyWidgetConfig({ config, onChange }: WidgetConfigProps) {
 }
 ```
 
+Use `authHeaders()` from `../utils` when making fetch calls to the backend — it returns the `Authorization` header object automatically. Use `authHeader()` (singular) when you need just the string value.
+
 ### 2. Register the widget
 
 Add an entry to `frontend/src/widgets/registry.tsx`:
@@ -189,6 +200,8 @@ import MyWidget, { MyWidgetConfig } from './MyWidget';
   name: 'My Widget',
   description: 'A short description shown in the Add Widget modal',
   icon: '🔧',
+  category: 'Utilities',          // 'Utilities' | 'Information' | 'Media' | 'Network' | 'Downloads & Containers'
+  logoUrl: 'https://cdn.simpleicons.org/myservice/ffffff',  // optional, replaces icon if provided
   defaultSize: { w: 3, h: 3, minW: 2, minH: 2 },
   defaultConfig: { label: 'Hello' },
   component: MyWidget,
@@ -196,7 +209,7 @@ import MyWidget, { MyWidgetConfig } from './MyWidget';
 }
 ```
 
-That's all that's needed for a client-only widget.
+That's all that's needed for a client-only widget. The category controls which section it appears in the Add Widget modal.
 
 ### 3. Add a backend integration (if needed)
 
@@ -233,10 +246,7 @@ Then call it from your widget component:
 ```ts
 const res = await fetch('/api/integrations/mywidget', {
   method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('orbix_token')}`,
-  },
+  headers: { 'Content-Type': 'application/json', ...authHeaders() },
   body: JSON.stringify({ url: config.url }),
 });
 ```
