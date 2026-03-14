@@ -6,14 +6,29 @@ import Navbar from '../components/Navbar';
 import WidgetGrid from '../components/WidgetGrid';
 import AddWidgetModal from '../components/AddWidgetModal';
 import ThemeEditor from '../components/ThemeEditor';
+import SpotlightSearch from '../components/SpotlightSearch';
 
 export default function DashboardPage() {
   const [widgets, setWidgets] = useState<Widget[]>([]);
   const [layout, setLayout] = useState<LayoutItem[]>([]);
   const [showAddWidget, setShowAddWidget] = useState(false);
   const [showThemeEditor, setShowThemeEditor] = useState(false);
+  const [showSpotlight, setShowSpotlight] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  // Spacebar opens spotlight search (unless focus is in an input)
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key !== ' ') return;
+      const tag = (e.target as HTMLElement).tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || (e.target as HTMLElement).isContentEditable) return;
+      e.preventDefault();
+      setShowSpotlight(true);
+    }
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, []);
 
   // Load widgets and layout on mount
   useEffect(() => {
@@ -179,6 +194,7 @@ export default function DashboardPage() {
       )}
 
       {showThemeEditor && <ThemeEditor onClose={() => setShowThemeEditor(false)} />}
+      {showSpotlight && <SpotlightSearch onClose={() => setShowSpotlight(false)} />}
     </div>
   );
 }
