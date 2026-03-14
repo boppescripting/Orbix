@@ -45,8 +45,7 @@ export default function RegisterPage() {
     <div style={styles.page}>
       <div style={styles.card}>
         <div style={styles.logoArea}>
-          <span style={styles.logoIcon}>🌐</span>
-          <h1 style={styles.logoText}>Orbix</h1>
+          <h1 style={styles.logoText}>ORBIX</h1>
           <p style={styles.logoSub}>Create your account</p>
         </div>
 
@@ -91,7 +90,7 @@ export default function RegisterPage() {
           {error && <p style={styles.error}>{error}</p>}
 
           <button type="submit" disabled={loading} style={styles.button}>
-            {loading ? 'Creating account...' : 'Create account'}
+            {loading ? 'CREATING...' : 'CREATE ACCOUNT'}
           </button>
         </form>
 
@@ -117,31 +116,29 @@ const styles: Record<string, React.CSSProperties> = {
   },
   card: {
     width: '100%',
-    maxWidth: '400px',
+    maxWidth: '380px',
     background: 'var(--color-surface)',
-    border: '1px solid var(--color-border)',
-    borderRadius: '12px',
+    border: '2px solid var(--color-border)',
     padding: '2.5rem',
   },
   logoArea: {
     textAlign: 'center',
     marginBottom: '2rem',
-  },
-  logoIcon: {
-    fontSize: '2.5rem',
-    display: 'block',
-    marginBottom: '0.5rem',
+    borderBottom: '2px solid var(--color-border)',
+    paddingBottom: '1.5rem',
   },
   logoText: {
     fontSize: '1.75rem',
-    fontWeight: 700,
+    fontWeight: 900,
     color: 'var(--color-text)',
-    letterSpacing: '-0.02em',
+    letterSpacing: '0.2em',
   },
   logoSub: {
     color: 'var(--color-text-muted)',
-    fontSize: '0.9rem',
-    marginTop: '0.25rem',
+    fontSize: '0.75rem',
+    marginTop: '0.4rem',
+    letterSpacing: '0.06em',
+    textTransform: 'uppercase',
   },
   form: {
     display: 'flex',
@@ -154,46 +151,53 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '0.4rem',
   },
   label: {
-    fontSize: '0.85rem',
-    fontWeight: 500,
+    fontSize: '0.68rem',
+    fontWeight: 800,
     color: 'var(--color-text-muted)',
+    textTransform: 'uppercase',
+    letterSpacing: '0.1em',
   },
   input: {
     padding: '0.65rem 0.85rem',
     background: 'var(--color-background)',
-    border: '1px solid var(--color-border)',
-    borderRadius: '8px',
+    border: '2px solid var(--color-border)',
     color: 'var(--color-text)',
-    fontSize: '0.95rem',
+    fontSize: '0.9rem',
     outline: 'none',
+    width: '100%',
+    boxSizing: 'border-box' as const,
   },
   error: {
     color: 'var(--color-danger)',
-    fontSize: '0.875rem',
+    fontSize: '0.8rem',
     padding: '0.5rem 0.75rem',
-    background: 'rgba(239,68,68,0.1)',
-    borderRadius: '6px',
-    border: '1px solid rgba(239,68,68,0.3)',
+    background: 'rgba(255,23,68,0.08)',
+    border: '2px solid rgba(255,23,68,0.3)',
+    letterSpacing: '0.03em',
   },
   button: {
     padding: '0.75rem',
     background: 'var(--color-primary)',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '8px',
-    fontSize: '1rem',
-    fontWeight: 600,
+    color: '#000',
+    border: '2px solid var(--color-primary)',
+    fontSize: '0.8rem',
+    fontWeight: 900,
+    letterSpacing: '0.12em',
     cursor: 'pointer',
     marginTop: '0.5rem',
+    width: '100%',
   },
   switchText: {
     textAlign: 'center',
     marginTop: '1.5rem',
     color: 'var(--color-text-muted)',
-    fontSize: '0.875rem',
+    fontSize: '0.8rem',
+    letterSpacing: '0.03em',
   },
   link: {
-    color: 'var(--color-primary)',
-    fontWeight: 500,
+    color: 'var(--color-text)',
+    fontWeight: 700,
+    textDecoration: 'underline',
+    textUnderlineOffset: '3px',
   },
 };

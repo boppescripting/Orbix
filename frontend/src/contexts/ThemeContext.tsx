@@ -17,7 +17,7 @@ const DEFAULT_THEME: Theme = {
   primary: '#fff500',
   primaryHover: '#ffe000',
   text: '#efefef',
-  textMuted: '#555555',
+  textMuted: '#888888',
   border: '#2a2a2a',
   success: '#00e676',
   danger: '#ff1744',
