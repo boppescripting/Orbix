@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import type { WidgetProps, WidgetConfigProps } from '../types';
 import { SettingsField, SettingsInput, SettingsSelect, SettingsToggle } from './SettingsComponents';
+import { authHeaders } from '../utils';
 
 const REFRESH_OPTIONS = [
   { label: '5 seconds',  value: '5' },
@@ -32,10 +33,6 @@ function fmtEta(seconds: number): string {
   return `${Math.floor(seconds / 3600)}h ${Math.floor((seconds % 3600) / 60)}m`;
 }
 
-function authHeaders(): Record<string, string> {
-  const token = localStorage.getItem('orbix_token');
-  return token ? { Authorization: `Bearer ${token}` } : {};
-}
 
 export default function QbittorrentWidget({ config }: WidgetProps) {
   const url              = ((config.url as string) ?? '').replace(/\/$/, '');

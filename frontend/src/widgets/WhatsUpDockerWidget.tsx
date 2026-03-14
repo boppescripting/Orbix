@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import type { WidgetProps, WidgetConfigProps } from '../types';
 import { SettingsField, SettingsInput, SettingsSelect } from './SettingsComponents';
+import { authHeaders } from '../utils';
 
 const REFRESH_OPTIONS = [
   { label: '1 minute',   value: '60' },
@@ -26,10 +27,6 @@ interface WudData {
   containers: Container[];
 }
 
-function authHeaders(): Record<string, string> {
-  const token = localStorage.getItem('orbix_token');
-  return token ? { Authorization: `Bearer ${token}` } : {};
-}
 
 export default function WhatsUpDockerWidget({ config }: WidgetProps) {
   const url     = ((config.url as string) ?? '').replace(/\/$/, '');

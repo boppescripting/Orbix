@@ -81,7 +81,7 @@ router.post('/', async (req, res) => {
     const containers = await Promise.all(
       list.map(async (c) => {
         const name = (c.Names?.[0] ?? c.Id.slice(0, 12)).replace(/^\//, '');
-        const base_info = {
+        const baseInfo = {
           id: c.Id,
           shortId: c.Id.slice(0, 12),
           name,
@@ -94,7 +94,7 @@ router.post('/', async (req, res) => {
           memPercent: 0,
         };
 
-        if (c.State !== 'running') return base_info;
+        if (c.State !== 'running') return baseInfo;
 
         try {
           const statsResp = await dockerRequest(
@@ -102,7 +102,7 @@ router.post('/', async (req, res) => {
             'GET',
             baseUrl
           );
-          if (statsResp.status !== 200) return base_info;
+          if (statsResp.status !== 200) return baseInfo;
           const stats = JSON.parse(statsResp.body);
 
           const cpuPercent = calcCpu(stats);
@@ -114,14 +114,14 @@ router.post('/', async (req, res) => {
             memLimit > 0 ? Math.round((memUsage / memLimit) * 1000) / 10 : 0;
 
           return {
-            ...base_info,
+            ...baseInfo,
             cpuPercent,
             memPercent,
             memUsageFmt: fmtBytes(memUsage),
             memLimitFmt: fmtBytes(memLimit),
           };
         } catch {
-          return base_info;
+          return baseInfo;
         }
       })
     );

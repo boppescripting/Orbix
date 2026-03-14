@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import type { WidgetProps, WidgetConfigProps } from '../types';
 import { SettingsField, SettingsInput, SettingsSelect } from './SettingsComponents';
+import { authHeaders } from '../utils';
 
 const REFRESH_OPTIONS = [
   { label: '10 seconds', value: '10' },
@@ -29,10 +30,6 @@ function countryFlag(code?: string): string {
   ).join('');
 }
 
-function authHeaders(): Record<string, string> {
-  const token = localStorage.getItem('orbix_token');
-  return token ? { Authorization: `Bearer ${token}` } : {};
-}
 
 export default function GluetunWidget({ config }: WidgetProps) {
   const url      = ((config.url as string) ?? '').replace(/\/$/, '');

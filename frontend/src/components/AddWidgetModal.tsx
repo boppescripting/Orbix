@@ -1,13 +1,13 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { widgetRegistry } from '../widgets/registry';
-import type { WidgetDefinition } from '../types'; // used by WidgetCard prop type
+import type { WidgetCategory, WidgetDefinition } from '../types';
 
 interface AddWidgetModalProps {
   onAdd: (type: string, config: Record<string, unknown>) => void;
   onClose: () => void;
 }
 
-const CATEGORY_ORDER = ['Utilities', 'Information', 'Media', 'Network', 'Downloads & Containers'];
+const CATEGORY_ORDER: WidgetCategory[] = ['Utilities', 'Information', 'Media', 'Network', 'Downloads & Containers'];
 
 const CATEGORIES = CATEGORY_ORDER.map((label) => ({
   label,
@@ -23,9 +23,10 @@ export default function AddWidgetModal({ onAdd, onClose }: AddWidgetModalProps) 
   }, []);
 
   const q = query.trim().toLowerCase();
-  const filtered = q
-    ? widgetRegistry.filter((w) => w.name.toLowerCase().includes(q))
-    : null;
+  const filtered = useMemo(
+    () => q ? widgetRegistry.filter((w) => w.name.toLowerCase().includes(q)) : null,
+    [q]
+  );
 
   return (
     <div style={styles.overlay} onClick={onClose}>

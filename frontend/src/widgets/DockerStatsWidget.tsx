@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import type { WidgetProps, WidgetConfigProps } from '../types';
 import { SettingsField, SettingsInput, SettingsSelect, SettingsToggle } from './SettingsComponents';
+import { authHeader, thresholdColor } from '../utils';
 
 interface Container {
   id: string;
@@ -23,9 +24,6 @@ interface DockerData {
   containers: Container[];
 }
 
-function authHeader(): string {
-  return `Bearer ${localStorage.getItem('orbix_token') ?? ''}`;
-}
 
 function Statedot({ state }: { state: string }) {
   const color =
@@ -115,9 +113,10 @@ export default function DockerStatsWidget({ config }: WidgetProps) {
     return <div style={styles.empty}>Loading...</div>;
   }
 
-  const containers = showStopped
-    ? data.containers
-    : data.containers.filter((c) => c.state === 'running');
+  const containers = useMemo(
+    () => showStopped ? data.containers : data.containers.filter((c) => c.state === 'running'),
+    [data.containers, showStopped]
+  );
 
   return (
     <div style={styles.wrap}>
@@ -136,18 +135,8 @@ export default function DockerStatsWidget({ config }: WidgetProps) {
         )}
         {containers.map((c) => {
           const isRunning = c.state === 'running';
-          const cpuColor =
-            c.cpuPercent > 80
-              ? 'var(--color-danger)'
-              : c.cpuPercent > 50
-              ? 'var(--color-primary)'
-              : 'var(--color-success)';
-          const memColor =
-            c.memPercent > 80
-              ? 'var(--color-danger)'
-              : c.memPercent > 50
-              ? 'var(--color-primary)'
-              : 'var(--color-success)';
+          const cpuColor = thresholdColor(c.cpuPercent);
+          const memColor = thresholdColor(c.memPercent);
 
           return (
             <div key={c.id} style={styles.row}>

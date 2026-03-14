@@ -52,13 +52,15 @@ export interface WidgetConfigProps {
   onChange: (config: Record<string, unknown>) => void;
 }
 
+export type WidgetCategory = 'Utilities' | 'Media' | 'Network' | 'Downloads & Containers' | 'Information';
+
 export interface WidgetDefinition {
   type: string;
   name: string;
   description: string;
   icon: string;
   logoUrl?: string;
-  category: 'Utilities' | 'Media' | 'Network' | 'Downloads & Containers' | 'Information';
+  category: WidgetCategory;
   defaultSize: { w: number; h: number; minW?: number; minH?: number };
   defaultConfig: Record<string, unknown>;
   component: React.ComponentType<WidgetProps>;

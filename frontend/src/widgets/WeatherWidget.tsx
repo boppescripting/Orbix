@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import type { WidgetProps, WidgetConfigProps } from '../types';
 import { SettingsField, SettingsInput, SettingsSelect } from './SettingsComponents';
+import { authHeaders } from '../utils';
 
 const REFRESH_OPTIONS = [
   { label: '5 minutes',  value: '300' },
@@ -35,10 +36,6 @@ function unitSymbol(unit: string) {
   return unit === 'fahrenheit' ? '°F' : '°C';
 }
 
-function authHeaders(): Record<string, string> {
-  const token = localStorage.getItem('orbix_token');
-  return token ? { Authorization: `Bearer ${token}` } : {};
-}
 
 export default function WeatherWidget({ config }: WidgetProps) {
   const city     = (config.city as string) ?? '';

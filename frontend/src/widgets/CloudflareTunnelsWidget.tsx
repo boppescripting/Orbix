@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import type { WidgetProps, WidgetConfigProps } from '../types';
 import { SettingsField, SettingsInput, SettingsSelect } from './SettingsComponents';
+import { authHeaders } from '../utils';
 
 const REFRESH_OPTIONS = [
   { label: '30 seconds', value: '30' },
@@ -39,10 +40,6 @@ function statusLabel(status: string) {
   return STATUS_LABEL[status] ?? status;
 }
 
-function authHeaders(): Record<string, string> {
-  const token = localStorage.getItem('orbix_token');
-  return token ? { Authorization: `Bearer ${token}` } : {};
-}
 
 export default function CloudflareTunnelsWidget({ config }: WidgetProps) {
   const accountId = (config.accountId as string) ?? '';
