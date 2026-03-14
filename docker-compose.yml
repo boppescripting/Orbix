@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   backend:
-    image: ghcr.io/YOUR_GITHUB_USERNAME/orbix-backend:latest
+    image: ghcr.io/boppescripting/orbix-backend:latest
     build: ./backend
     ports:
       - "3001:3001"
@@ -13,18 +13,12 @@ services:
       - PORT=3001
       - DB_PATH=/app/data/dashboard.db
     restart: unless-stopped
-    labels:
-      - "wud.watch=true"
-      - "wud.tag.include=^latest$$"
 
   frontend:
-    image: ghcr.io/YOUR_GITHUB_USERNAME/orbix-frontend:latest
+    image: ghcr.io/boppescripting/orbix-frontend:latest
     build: ./frontend
     ports:
       - "3000:80"
     depends_on:
       - backend
     restart: unless-stopped
-    labels:
-      - "wud.watch=true"
-      - "wud.tag.include=^latest$$"
