@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import type { WidgetProps, WidgetConfigProps } from '../types';
 import { SettingsField, SettingsInput, SettingsSelect, SettingsToggle } from './SettingsComponents';
 import { authHeader, thresholdColor } from '../utils';
@@ -113,10 +113,7 @@ export default function DockerStatsWidget({ config }: WidgetProps) {
     return <div style={styles.empty}>Loading...</div>;
   }
 
-  const containers = useMemo(
-    () => showStopped ? data.containers : data.containers.filter((c) => c.state === 'running'),
-    [data.containers, showStopped]
-  );
+  const containers = showStopped ? data.containers : data.containers.filter((c) => c.state === 'running');
 
   return (
     <div style={styles.wrap}>
